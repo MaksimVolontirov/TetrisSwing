@@ -19,7 +19,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte str;
     static boolean cantFall;
     static boolean restart = true;
-    static byte field[][] = new byte[25][12];
+    static byte field[][] = new byte[25][12]; //Игровое поле
     byte arrayOfFigures[][][][]={
             {{{-1,0},{0,1},{1,0}},{{0,-1},{-1,0},{0,1}},{{1,0},{0,-1},{-1,0}},{{0,1},{1,0},{0,-1}}},
             {{{0,-1},{0,1},{1,1}},{{1,0},{-1,0},{-1,1}},{{0,1},{0,-1},{-1,-1}},{{-1,0},{1,0},{1,-1}}},
@@ -29,7 +29,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             {{{-1,0},{0,-1},{1,-1}},{{0,-1},{1,0},{1,1}},{{1,0},{0,1},{-1,1}},{{0,1},{-1,0},{-1,-1}}},
             {{{1,0},{0,-1},{-1,-1}},{{0,1},{1,0},{1,-1}},{{-1,0},{0,1},{1,1}},{{0,-1},{-1,0},{-1,1}}}
     };
-    static byte figure;
+    static byte figure; //Значение, показывающее номер фигуры
     static byte nextfigure;
     static byte fillAmount;
     Timer timer = new Timer(5,this);
