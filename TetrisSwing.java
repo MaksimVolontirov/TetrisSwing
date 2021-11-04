@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 
 
 public class TetrisSwing extends JComponent implements KeyListener, ActionListener {
-    static int variable1;
     static byte falltimer;
     static double speed;
     static int rotation;
