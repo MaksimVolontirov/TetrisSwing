@@ -50,6 +50,14 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         Dimension dimension = toolkit.getScreenSize();
         frame.setBounds((dimension.width- WINDOW_WIDTH) / 2,(dimension.height - WINDOW_HEIGHT) / 2,WINDOW_WIDTH+15,WINDOW_HEIGHT+38);
         frame.setTitle("T E T R I S");
+        JLabel scoreLabel;
+        scoreLabel = new JLabel("Score: ");
+        scoreLabel.setBounds(390,300,40,40);
+        frame.add(scoreLabel);
+        JLabel nextLabel;
+        nextLabel = new JLabel("Next figure:");
+        nextLabel.setBounds(390,20,80,40);
+        frame.add(nextLabel);
         return(frame);
     }
     public void paint(Graphics g){
