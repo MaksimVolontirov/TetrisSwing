@@ -20,6 +20,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static boolean cantFall;
     static boolean restart = true;
     static byte field[][] = new byte[25][12]; //Игровое поле
+
     byte arrayOfFigures[][][][]={
             {{{-1,0},{0,1},{1,0}},{{0,-1},{-1,0},{0,1}},{{1,0},{0,-1},{-1,0}},{{0,1},{1,0},{0,-1}}},
             {{{0,-1},{0,1},{1,1}},{{1,0},{-1,0},{-1,1}},{{0,1},{0,-1},{-1,-1}},{{-1,0},{1,0},{1,-1}}},
@@ -30,17 +31,21 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             {{{1,0},{0,-1},{-1,-1}},{{0,1},{1,0},{1,-1}},{{-1,0},{0,1},{1,1}},{{0,-1},{-1,0},{-1,1}}}
     };
     static byte figure; //Значение, показывающее номер фигуры
-    static byte nextfigure;
+    static byte nextFigure;
     static byte fillAmount;
+
     Timer timer = new Timer(5,this);
+
     static final int WINDOW_WIDTH = 570;
     static final int WINDOW_HEIGHT = 660;
-        public static void main(String[] args) {
-            TetrisSwing main = new TetrisSwing();
-            JFrame frame = getFrame();
-            frame.add(main);
-            frame.addKeyListener(main);
+
+    public static void main(String[] args) {
+        TetrisSwing main = new TetrisSwing();
+        JFrame frame = getFrame();
+        frame.add(main);
+        frame.addKeyListener(main);
     }
+
     static JFrame getFrame(){
         JFrame frame = new JFrame();
         frame.setVisible(true);
@@ -52,6 +57,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         frame.setTitle("T E T R I S");
         return(frame);
     }
+
     public void paint(Graphics g){
         g.setColor(Color.BLACK);
         g.fillRect(0,0,WINDOW_WIDTH+1,WINDOW_HEIGHT+1);
@@ -138,7 +144,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         }
         g.setColor(Color.DARK_GRAY);
         g.fillRect(390,60,150,180);
-        switch(nextfigure){
+        switch(nextFigure){
             case 1:
                 g.setColor(Color.RED);
                 break;
@@ -181,7 +187,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         if(restart){
             score = 0;
             speed = 30;
-            nextfigure = (byte)(1 + Math.random() * 7);
+            nextFigure = (byte)(1 + Math.random() * 7);
             aX = 4;
             aY = 2;
             cantFall = true;
@@ -194,14 +200,14 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         if(cantFall){
             cantFall = false;
             rotation = 0;
-            figure = nextfigure;
-            nextfigure = (byte)(1 + Math.random() * 7);
-            nextBX = nextAX + 30 * arrayOfFigures[nextfigure-1][0][0][0];
-            nextBY = nextAY + 30 * arrayOfFigures[nextfigure-1][0][0][1];
-            nextCX = nextAX + 30 * arrayOfFigures[nextfigure-1][0][1][0];
-            nextCY = nextAY + 30 * arrayOfFigures[nextfigure-1][0][1][1];
-            nextDX = nextAX + 30 * arrayOfFigures[nextfigure-1][0][2][0];
-            nextDY = nextAY + 30 * arrayOfFigures[nextfigure-1][0][2][1];
+            figure = nextFigure;
+            nextFigure = (byte)(1 + Math.random() * 7);
+            nextBX = nextAX + 30 * arrayOfFigures[nextFigure-1][0][0][0];
+            nextBY = nextAY + 30 * arrayOfFigures[nextFigure-1][0][0][1];
+            nextCX = nextAX + 30 * arrayOfFigures[nextFigure-1][0][1][0];
+            nextCY = nextAY + 30 * arrayOfFigures[nextFigure-1][0][1][1];
+            nextDX = nextAX + 30 * arrayOfFigures[nextFigure-1][0][2][0];
+            nextDY = nextAY + 30 * arrayOfFigures[nextFigure-1][0][2][1];
             if(figure == 4){
                 amount = 1;
             }else{
@@ -266,11 +272,18 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     @Override
     public void keyTyped(KeyEvent e) {
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
         if(!restart) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
-                rotation = (rotation + 1) % amount;
+                if((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] < 11)) {
+                    if((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] > 0)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] > 0)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] > 0)){
+                        if((field[aY + arrayOfFigures[figure-1][(rotation + 1) % amount][0][1] - 1][aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0]] == 0)&&(field[aY + arrayOfFigures[figure-1][(rotation + 1) % amount][1][1] - 1][aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0]] == 0)&&(field[aY + arrayOfFigures[figure-1][(rotation + 1) % amount][2][1] - 1][aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0]] == 0)) {
+                            rotation = (rotation + 1) % amount;
+                        }
+                    }
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 if ((field[aY - 1][aX - 1] == 0) && (aX - 1 > 0) && (field[bY - 1][bX - 1] == 0) && (bX - 1 > 0) && (field[cY - 1][cX - 1] == 0) && (cX - 1 > 0) && (field[dY - 1][dX - 1] == 0) && (dX - 1 > 0)) {
