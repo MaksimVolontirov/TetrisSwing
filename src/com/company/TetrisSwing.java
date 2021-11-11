@@ -280,19 +280,25 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                 if((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] < 11)) {
                     if((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] > 0)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] > 0)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] > 0)){
                         if((field[aY + arrayOfFigures[figure-1][(rotation + 1) % amount][0][1] - 1][aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0]] == 0)&&(field[aY + arrayOfFigures[figure-1][(rotation + 1) % amount][1][1] - 1][aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0]] == 0)&&(field[aY + arrayOfFigures[figure-1][(rotation + 1) % amount][2][1] - 1][aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0]] == 0)) {
-                            rotation = (rotation + 1) % amount;
+                            if(aY + arrayOfFigures[figure - 1][(rotation + 1) % amount][0][1] < 24 && aY + arrayOfFigures[figure - 1][(rotation + 1) % amount][1][1] < 24 && aY + arrayOfFigures[figure - 1][(rotation + 1) % amount][2][1] < 24) {
+                                rotation = (rotation + 1) % amount;
+                            }
                         }
                     }
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                if ((field[aY - 1][aX - 1] == 0) && (aX - 1 > 0) && (field[bY - 1][bX - 1] == 0) && (bX - 1 > 0) && (field[cY - 1][cX - 1] == 0) && (cX - 1 > 0) && (field[dY - 1][dX - 1] == 0) && (dX - 1 > 0)) {
-                    aX -= 1;
+                if(!cantFall) {
+                    if ((field[aY - 1][aX - 1] == 0) && (aX - 1 > 0) && (field[bY - 1][bX - 1] == 0) && (bX - 1 > 0) && (field[cY - 1][cX - 1] == 0) && (cX - 1 > 0) && (field[dY - 1][dX - 1] == 0) && (dX - 1 > 0)) {
+                        aX -= 1;
+                    }
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                if ((field[aY - 1][aX + 1] == 0) && (aX + 1 < 11) && (field[bY - 1][bX + 1] == 0) && (bX + 1 < 11) && (field[cY - 1][cX + 1] == 0) && (cX + 1 < 11) && (field[dY - 1][dX + 1] == 0) && (dX + 1 < 11)) {
-                    aX += 1;
+                if(!cantFall) {
+                    if ((field[aY - 1][aX + 1] == 0) && (aX + 1 < 11) && (field[bY - 1][bX + 1] == 0) && (bX + 1 < 11) && (field[cY - 1][cX + 1] == 0) && (cX + 1 < 11) && (field[dY - 1][dX + 1] == 0) && (dX + 1 < 11)) {
+                        aX += 1;
+                    }
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
