@@ -218,7 +218,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         }else {
             if (falltimer == speed) {
                 if ((field[aY][aX] == 0) && (aY + 1 < 25) && (field[bY][bX] == 0) && (bY + 1 < 25) && (field[cY][cX] == 0) && (cY + 1 < 25) && (field[dY][dX] == 0) && (dY + 1 < 25)) {
-                    aY += 1;
+                    aY++;
                 } else {
                     cantFall = true;
                     field[aY - 1][aX] = figure;
@@ -248,13 +248,11 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                         }
                         str--;
                     }
-
                         for(int i = 1; i < 11; i++){
                             if(field[3][i] != 0){
                                 restart = true;
                             }
                         }
-
                 }
                 falltimer = 0;
             }
@@ -303,7 +301,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 if ((field[aY][aX] == 0) && (aY + 1 < 25) && (field[bY][bX] == 0) && (bY + 1 < 25) && (field[cY][cX] == 0) && (cY + 1 < 25) && (field[dY][dX] == 0) && (dY + 1 < 25)) {
-                    aY += 1;
+                    aY++;
                     bY = aY + arrayOfFigures[figure - 1][rotation][0][1];
                     cY = aY + arrayOfFigures[figure - 1][rotation][1][1];
                     dY = aY + arrayOfFigures[figure - 1][rotation][2][1];
