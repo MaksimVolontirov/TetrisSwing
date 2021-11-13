@@ -22,7 +22,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte field[][] = new byte[25][12]; //Игровое поле
 
     byte arrayOfFigures[][][][]={
-            {{{-1,0},{0,1},{1,0}},{{0,-1},{-1,0},{0,1}},{{1,0},{0,-1},{-1,0}},{{0,1},{1,0},{0,-1}}},
+            { {{-1,0},{0,1},{1,0}} , {{0,-1},{-1,0},{0,1}} , {{1,0},{0,-1},{-1,0}} , {{0,1},{1,0},{0,-1}} },
             {{{0,-1},{0,1},{1,1}},{{1,0},{-1,0},{-1,1}},{{0,1},{0,-1},{-1,-1}},{{-1,0},{1,0},{1,-1}}},
             {{{0,-1},{0,1},{-1,1}},{{1,0},{-1,0},{-1,-1}},{{0,1},{0,-1},{1,-1}},{{-1,0},{1,0},{1,1}}},
             {{{1,0},{0,1},{1,1}}},
@@ -248,18 +248,18 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                         }
                         str--;
                     }
-                    for(int j = 0; j < 4; j++){
+
                         for(int i = 1; i < 11; i++){
-                            if(field[j][i] != 0){
+                            if(field[3][i] != 0){
                                 restart = true;
                             }
                         }
-                    }
+
                 }
-                falltimer %= speed;
+                falltimer = 0;
             }
         }
-            falltimer += 1;
+            falltimer++;
             bX = aX + arrayOfFigures[figure-1][rotation][0][0];
             bY = aY + arrayOfFigures[figure-1][rotation][0][1];
             cX = aX + arrayOfFigures[figure-1][rotation][1][0];
@@ -290,14 +290,14 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 if(!cantFall) {
                     if ((field[aY - 1][aX - 1] == 0) && (aX - 1 > 0) && (field[bY - 1][bX - 1] == 0) && (bX - 1 > 0) && (field[cY - 1][cX - 1] == 0) && (cX - 1 > 0) && (field[dY - 1][dX - 1] == 0) && (dX - 1 > 0)) {
-                        aX -= 1;
+                        aX--;
                     }
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 if(!cantFall) {
                     if ((field[aY - 1][aX + 1] == 0) && (aX + 1 < 11) && (field[bY - 1][bX + 1] == 0) && (bX + 1 < 11) && (field[cY - 1][cX + 1] == 0) && (cX + 1 < 11) && (field[dY - 1][dX + 1] == 0) && (dX + 1 < 11)) {
-                        aX += 1;
+                        aX++;
                     }
                 }
             }
