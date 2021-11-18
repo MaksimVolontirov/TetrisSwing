@@ -20,7 +20,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static boolean cantFall;
     static boolean restart = true;
     static byte field[][] = new byte[25][12]; //Игровое поле
-
+    static boolean gameOver = true;
     byte arrayOfFigures[][][][] = {
             {{{-1,0},{0,1},{1,0}}, {{0,-1},{-1,0},{0,1}}, {{1,0},{0,-1},{-1,0}}, {{0,1},{1,0},{0,-1}}},
             {{{0,-1},{0,1},{1,1}}, {{1,0},{-1,0},{-1,1}}, {{0,1},{0,-1},{-1,-1}}, {{-1,0},{1,0},{1,-1}}},
@@ -40,6 +40,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static final int WINDOW_HEIGHT = 660;
     static JFrame frame;
     static JLabel currentScoreLabel;
+    static JLabel restartLabel;
     static Font font;
 
     public static void main(String[] args) {
@@ -63,13 +64,19 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         scoreLabel.setBounds(390,330,70,30);
         scoreLabel.setFont(font);
         frame.add(scoreLabel);
+        Font FONT = new Font("Arial", Font.PLAIN, 40);
+        restartLabel = new JLabel("Press spacebar to start", SwingConstants.CENTER);
+        restartLabel.setForeground(Color.WHITE);
+        restartLabel.setBounds(70,260,420,60);
+        restartLabel.setFont(FONT);
+        frame.add(restartLabel);
         currentScoreLabel = new JLabel(String.valueOf(score));
         currentScoreLabel.setForeground(Color.LIGHT_GRAY);
         currentScoreLabel.setBounds(460,330,80,30);
         currentScoreLabel.setFont(font);
         frame.add(currentScoreLabel);
         JLabel nextLabel = new JLabel("Next figure:");
-        nextLabel.setBounds(390,27,100,30);
+        nextLabel.setBounds(390,27,110,30);
         nextLabel.setForeground(Color.LIGHT_GRAY);
         nextLabel.setFont(font);
         frame.add(nextLabel);
@@ -197,94 +204,104 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             g.drawRect(nextCX, nextCY, 30, 30);
             g.drawRect(nextDX, nextDY, 30, 30);
         }
-        timer.start();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
-        if (restart) {
-            score = 0;
-            currentScoreLabel.setText(String.valueOf(score));
-            speed = 30;
-            nextFigure = (byte)(1 + Math.random() * 7);
-            aX = 4;
-            aY = 2;
-            cantFall = true;
-            for (int i = 0; i < 25; i++) {
-                for (int j = 0; j < 12; j++) {
-                    field[i][j] = 0;
-                }
-            }
+        if(gameOver) {
+            Font FONT = new Font("Arial", Font.PLAIN, 36);
+            restartLabel.setFont(FONT);
+            restartLabel.setBounds(30,160,470,200);
+            restartLabel.setText("<html><center>Game over!<center>" +
+                                "Your score: " + score +
+                                "<br>Press spacebar to start again<html>");
+            restartLabel.setVisible(true);
         } else {
-            if (cantFall) {
-                cantFall = false;
-                rotation = 0;
-                figure = nextFigure;
-                nextFigure = (byte)(1 + Math.random() * 7);
-                nextBX = nextAX + 30 * arrayOfFigures[nextFigure-1][0][0][0];
-                nextBY = nextAY + 30 * arrayOfFigures[nextFigure-1][0][0][1];
-                nextCX = nextAX + 30 * arrayOfFigures[nextFigure-1][0][1][0];
-                nextCY = nextAY + 30 * arrayOfFigures[nextFigure-1][0][1][1];
-                nextDX = nextAX + 30 * arrayOfFigures[nextFigure-1][0][2][0];
-                nextDY = nextAY + 30 * arrayOfFigures[nextFigure-1][0][2][1];
-                if (figure == 4) {
-                    amount = 1;
-                } else {
-                    amount = 4;
-                }
-                aX = 5;
+            if (restart) {
+                restart = false;
+                score = 0;
+                currentScoreLabel.setText(String.valueOf(score));
+                speed = 30;
+                nextFigure = (byte) (1 + Math.random() * 7);
+                aX = 4;
                 aY = 2;
+                cantFall = true;
+                for (int i = 0; i < 25; i++) {
+                    for (int j = 0; j < 12; j++) {
+                        field[i][j] = 0;
+                    }
+                }
             } else {
-                if (fallTimer == speed) {
-                    if ((field[aY][aX] == 0) && (aY + 1 < 25) && (field[bY][bX] == 0) && (bY + 1 < 25) && (field[cY][cX] == 0) && (cY + 1 < 25) && (field[dY][dX] == 0) && (dY + 1 < 25)) {
-                        aY++;
+                if (cantFall) {
+                    cantFall = false;
+                    rotation = 0;
+                    figure = nextFigure;
+                    nextFigure = (byte) (1 + Math.random() * 7);
+                    nextBX = nextAX + 30 * arrayOfFigures[nextFigure - 1][0][0][0];
+                    nextBY = nextAY + 30 * arrayOfFigures[nextFigure - 1][0][0][1];
+                    nextCX = nextAX + 30 * arrayOfFigures[nextFigure - 1][0][1][0];
+                    nextCY = nextAY + 30 * arrayOfFigures[nextFigure - 1][0][1][1];
+                    nextDX = nextAX + 30 * arrayOfFigures[nextFigure - 1][0][2][0];
+                    nextDY = nextAY + 30 * arrayOfFigures[nextFigure - 1][0][2][1];
+                    if (figure == 4) {
+                        amount = 1;
                     } else {
-                        cantFall = true;
-                        field[aY - 1][aX] = figure;
-                        field[bY - 1][bX] = figure;
-                        field[cY - 1][cX] = figure;
-                        field[dY - 1][dX] = figure;
-                        str = 23;
-                        while (str > 3) {
-                            fillAmount = 0;
-                            for (int i = 1; i < 11; i++) {
-                                if (field[str][i] != 0) {
-                                    fillAmount++;
-                                }
-                            }
-                            if (fillAmount == 10) {
-                                score += 10;
-                                currentScoreLabel.setText(String.valueOf(score));
-                                if ((speed - 5 > 0) && (score % 200 == 0)) {
-                                    speed -= 5;
-                                }
-                                System.out.println(score);
-                                for (int j = str - 1; j >= 4; j--) {
-                                    for (int i = 1; i < 11; i++) {
-                                        field[j + 1][i] = field[j][i];
+                        amount = 4;
+                    }
+                    aX = 5;
+                    aY = 2;
+                } else {
+                    if (fallTimer == speed) {
+                        if ((field[aY][aX] == 0) && (aY + 1 < 25) && (field[bY][bX] == 0) && (bY + 1 < 25) && (field[cY][cX] == 0) && (cY + 1 < 25) && (field[dY][dX] == 0) && (dY + 1 < 25)) {
+                            aY++;
+                        } else {
+                            cantFall = true;
+                            field[aY - 1][aX] = figure;
+                            field[bY - 1][bX] = figure;
+                            field[cY - 1][cX] = figure;
+                            field[dY - 1][dX] = figure;
+                            str = 23;
+                            while (str > 3) {
+                                fillAmount = 0;
+                                for (int i = 1; i < 11; i++) {
+                                    if (field[str][i] != 0) {
+                                        fillAmount++;
                                     }
                                 }
-                                str++;
+                                if (fillAmount == 10) {
+                                    score += 10;
+                                    currentScoreLabel.setText(String.valueOf(score));
+                                    if ((speed - 5 > 0) && (score % 200 == 0)) {
+                                        speed -= 5;
+                                    }
+                                    for (int j = str - 1; j >= 4; j--) {
+                                        for (int i = 1; i < 11; i++) {
+                                            field[j + 1][i] = field[j][i];
+                                        }
+                                    }
+                                    str++;
+                                }
+                                str--;
                             }
-                            str--;
-                        }
-                        for(int i = 1; i < 11; i++) {
-                            if (field[3][i] != 0) {
-                                restart = true;
+                            for (int i = 1; i < 11; i++) {
+                                if (field[3][i] != 0) {
+                                    restart = true;
+                                    gameOver = true;
+                                }
                             }
                         }
+                        fallTimer = 0;
                     }
-                    fallTimer = 0;
                 }
+                fallTimer++;
+                bX = aX + arrayOfFigures[figure - 1][rotation][0][0];
+                bY = aY + arrayOfFigures[figure - 1][rotation][0][1];
+                cX = aX + arrayOfFigures[figure - 1][rotation][1][0];
+                cY = aY + arrayOfFigures[figure - 1][rotation][1][1];
+                dX = aX + arrayOfFigures[figure - 1][rotation][2][0];
+                dY = aY + arrayOfFigures[figure - 1][rotation][2][1];
             }
-            fallTimer++;
-            bX = aX + arrayOfFigures[figure-1][rotation][0][0];
-            bY = aY + arrayOfFigures[figure-1][rotation][0][1];
-            cX = aX + arrayOfFigures[figure-1][rotation][1][0];
-            cY = aY + arrayOfFigures[figure-1][rotation][1][1];
-            dX = aX + arrayOfFigures[figure-1][rotation][2][0];
-            dY = aY + arrayOfFigures[figure-1][rotation][2][1];
         }
     }
 
@@ -330,7 +347,9 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             }
         }
         if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-            restart = false;
+            timer.start();
+            gameOver = false;
+            restartLabel.setVisible(false);
         }
     }
     @Override
