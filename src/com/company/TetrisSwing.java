@@ -19,9 +19,9 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte str;
     static boolean cantFall;
     static boolean restart = true;
-    static byte field[][] = new byte[25][12]; //Игровое поле
+    static byte[][] field = new byte[25][12]; //Игровое поле
     static boolean gameOver = true;
-    byte arrayOfFigures[][][][] = {
+    byte[][][][] arrayOfFigures = {
             {{{-1,0},{0,1},{1,0}}, {{0,-1},{-1,0},{0,1}}, {{1,0},{0,-1},{-1,0}}, {{0,1},{1,0},{0,-1}}},
             {{{0,-1},{0,1},{1,1}}, {{1,0},{-1,0},{-1,1}}, {{0,1},{0,-1},{-1,-1}}, {{-1,0},{1,0},{1,-1}}},
             {{{0,-1},{0,1},{-1,1}}, {{1,0},{-1,0},{-1,-1}}, {{0,1},{0,-1},{1,-1}}, {{-1,0},{1,0},{1,1}}},
@@ -33,6 +33,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte figure; //Значение, показывающее номер фигуры
     static byte nextFigure;
     static byte fillAmount;
+    static boolean finishPaint = false;
 
     Timer timer = new Timer(5,this);
 
@@ -89,31 +90,60 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         g.fillRect(0,0,WINDOW_WIDTH+1,WINDOW_HEIGHT+1);
         for (int i = 4; i < 24; i++) {
             for (int j = 1; j < 11; j++) {
-                switch(field[i][j]) {
-                    case 0:
-                        g.setColor(Color.BLACK);
-                        break;
-                    case 1:
-                        g.setColor(Color.RED);
-                        break;
-                    case 2:
-                        g.setColor(Color.ORANGE);
-                        break;
-                    case 3:
-                        g.setColor(Color.YELLOW);
-                        break;
-                    case 4:
-                        g.setColor(Color.GREEN);
-                        break;
-                    case 5:
-                        g.setColor(Color.CYAN);
-                        break;
-                    case 6:
-                        g.setColor(Color.BLUE);
-                        break;
-                    case 7:
-                        g.setColor(Color.MAGENTA);
-                        break;
+                if (finishPaint) {
+                    switch (field[i][j]) {
+                        case 0:
+                            g.setColor(Color.BLACK);
+                            break;
+                        case 1:
+                            g.setColor(Color.RED.darker());
+                            break;
+                        case 2:
+                            g.setColor(Color.ORANGE.darker());
+                            break;
+                        case 3:
+                            g.setColor(Color.YELLOW.darker());
+                            break;
+                        case 4:
+                            g.setColor(Color.GREEN.darker());
+                            break;
+                        case 5:
+                            g.setColor(Color.CYAN.darker());
+                            break;
+                        case 6:
+                            g.setColor(Color.BLUE.darker());
+                            break;
+                        case 7:
+                            g.setColor(Color.MAGENTA.darker());
+                            break;
+                    }
+                } else {
+                    switch (field[i][j]) {
+                        case 0:
+                            g.setColor(Color.BLACK);
+                            break;
+                        case 1:
+                            g.setColor(Color.RED);
+                            break;
+                        case 2:
+                            g.setColor(Color.ORANGE);
+                            break;
+                        case 3:
+                            g.setColor(Color.YELLOW);
+                            break;
+                        case 4:
+                            g.setColor(Color.GREEN);
+                            break;
+                        case 5:
+                            g.setColor(Color.CYAN);
+                            break;
+                        case 6:
+                            g.setColor(Color.BLUE);
+                            break;
+                        case 7:
+                            g.setColor(Color.MAGENTA);
+                            break;
+                    }
                 }
                 g.fillRect((j+1)*30,(i-3)*30,30,30);
                 g.setColor(Color.GRAY);
@@ -210,6 +240,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     public void actionPerformed(ActionEvent e) {
         repaint();
         if(gameOver) {
+            finishPaint = true;
             Font FONT = new Font("Arial", Font.PLAIN, 36);
             restartLabel.setFont(FONT);
             restartLabel.setBounds(30,160,470,200);
@@ -218,6 +249,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                                 "<br>Press spacebar to start again<html>");
             restartLabel.setVisible(true);
         } else {
+            finishPaint = false;
             if (restart) {
                 restart = false;
                 score = 0;
