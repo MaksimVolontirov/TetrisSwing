@@ -19,9 +19,9 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte str;
     static boolean cantFall;
     static boolean restart = true;
-    static byte field[][] = new byte[25][12]; //Игровое поле
+    static byte[][] field = new byte[25][12]; //Игровое поле
     static boolean gameOver = true;
-    byte arrayOfFigures[][][][] = {
+    byte[][][][] arrayOfFigures = {
             {{{-1,0},{0,1},{1,0}}, {{0,-1},{-1,0},{0,1}}, {{1,0},{0,-1},{-1,0}}, {{0,1},{1,0},{0,-1}}},
             {{{0,-1},{0,1},{1,1}}, {{1,0},{-1,0},{-1,1}}, {{0,1},{0,-1},{-1,-1}}, {{-1,0},{1,0},{1,-1}}},
             {{{0,-1},{0,1},{-1,1}}, {{1,0},{-1,0},{-1,-1}}, {{0,1},{0,-1},{1,-1}}, {{-1,0},{1,0},{1,1}}},
@@ -33,6 +33,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte figure; //Значение, показывающее номер фигуры
     static byte nextFigure;
     static byte fillAmount;
+    static boolean finishPaint = false;
 
     Timer timer = new Timer(5,this);
 
@@ -40,9 +41,8 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static final int WINDOW_HEIGHT = 660;
     static JFrame frame;
     static JLabel currentScoreLabel;
-    static JLabel startInfoLabel;
+    static JLabel restartLabel;
     static Font font;
-    static JLabel gameOverLabel;
 
     public static void main(String[] args) {
         TetrisSwing main = new TetrisSwing();
@@ -65,16 +65,12 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         scoreLabel.setBounds(390,330,70,30);
         scoreLabel.setFont(font);
         frame.add(scoreLabel);
-        gameOverLabel = new JLabel();
-        gameOverLabel.setForeground(Color.LIGHT_GRAY);
-        gameOverLabel.setBounds(410,430,180,30);
-        gameOverLabel.setFont(font);
-        frame.add(gameOverLabel);
-        startInfoLabel = new JLabel("Press space to start");
-        startInfoLabel.setForeground(Color.LIGHT_GRAY);
-        startInfoLabel.setBounds(380,460,180,30);
-        startInfoLabel.setFont(font);
-        frame.add(startInfoLabel);
+        Font FONT = new Font("Arial", Font.PLAIN, 40);
+        restartLabel = new JLabel("Press spacebar to start", SwingConstants.CENTER);
+        restartLabel.setForeground(Color.WHITE);
+        restartLabel.setBounds(70,260,420,60);
+        restartLabel.setFont(FONT);
+        frame.add(restartLabel);
         currentScoreLabel = new JLabel(String.valueOf(score));
         currentScoreLabel.setForeground(Color.LIGHT_GRAY);
         currentScoreLabel.setBounds(460,330,80,30);
@@ -94,31 +90,60 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         g.fillRect(0,0,WINDOW_WIDTH+1,WINDOW_HEIGHT+1);
         for (int i = 4; i < 24; i++) {
             for (int j = 1; j < 11; j++) {
-                switch(field[i][j]) {
-                    case 0:
-                        g.setColor(Color.BLACK);
-                        break;
-                    case 1:
-                        g.setColor(Color.RED);
-                        break;
-                    case 2:
-                        g.setColor(Color.ORANGE);
-                        break;
-                    case 3:
-                        g.setColor(Color.YELLOW);
-                        break;
-                    case 4:
-                        g.setColor(Color.GREEN);
-                        break;
-                    case 5:
-                        g.setColor(Color.CYAN);
-                        break;
-                    case 6:
-                        g.setColor(Color.BLUE);
-                        break;
-                    case 7:
-                        g.setColor(Color.MAGENTA);
-                        break;
+                if (finishPaint) {
+                    switch (field[i][j]) {
+                        case 0:
+                            g.setColor(Color.BLACK);
+                            break;
+                        case 1:
+                            g.setColor(Color.RED.darker());
+                            break;
+                        case 2:
+                            g.setColor(Color.ORANGE.darker());
+                            break;
+                        case 3:
+                            g.setColor(Color.YELLOW.darker());
+                            break;
+                        case 4:
+                            g.setColor(Color.GREEN.darker());
+                            break;
+                        case 5:
+                            g.setColor(Color.CYAN.darker());
+                            break;
+                        case 6:
+                            g.setColor(Color.BLUE.darker());
+                            break;
+                        case 7:
+                            g.setColor(Color.MAGENTA.darker());
+                            break;
+                    }
+                } else {
+                    switch (field[i][j]) {
+                        case 0:
+                            g.setColor(Color.BLACK);
+                            break;
+                        case 1:
+                            g.setColor(Color.RED);
+                            break;
+                        case 2:
+                            g.setColor(Color.ORANGE);
+                            break;
+                        case 3:
+                            g.setColor(Color.YELLOW);
+                            break;
+                        case 4:
+                            g.setColor(Color.GREEN);
+                            break;
+                        case 5:
+                            g.setColor(Color.CYAN);
+                            break;
+                        case 6:
+                            g.setColor(Color.BLUE);
+                            break;
+                        case 7:
+                            g.setColor(Color.MAGENTA);
+                            break;
+                    }
                 }
                 g.fillRect((j+1)*30,(i-3)*30,30,30);
                 g.setColor(Color.GRAY);
@@ -215,9 +240,16 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     public void actionPerformed(ActionEvent e) {
         repaint();
         if(gameOver) {
-            gameOverLabel.setText("Game Over");
-            startInfoLabel.setText("Press space to start");
-        }else{
+            finishPaint = true;
+            Font FONT = new Font("Arial", Font.PLAIN, 36);
+            restartLabel.setFont(FONT);
+            restartLabel.setBounds(30,160,470,200);
+            restartLabel.setText("<html><center>Game over!<center>" +
+                                "Your score: " + score +
+                                "<br>Press spacebar to start again<html>");
+            restartLabel.setVisible(true);
+        } else {
+            finishPaint = false;
             if (restart) {
                 restart = false;
                 score = 0;
@@ -286,6 +318,8 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                             }
                             for (int i = 1; i < 11; i++) {
                                 if (field[3][i] != 0) {
+                                    aX = 5;
+                                    aY = 2;
                                     restart = true;
                                     gameOver = true;
                                 }
@@ -349,8 +383,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         if (e.getKeyCode()==KeyEvent.VK_SPACE) {
             timer.start();
             gameOver = false;
-            startInfoLabel.setText("");
-            gameOverLabel.setText("");
+            restartLabel.setVisible(false);
         }
     }
     @Override
