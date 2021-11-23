@@ -89,6 +89,11 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,WINDOW_WIDTH+1,WINDOW_HEIGHT+1);
+        paintField(g);
+        paintFigure(g);
+        paintNextFigure(g);
+    }
+    static void paintField(Graphics g) {
         for (int i = 4; i < 24; i++) {
             for (int j = 1; j < 11; j++) {
                 if (finishPaint) {
@@ -119,6 +124,8 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                 g.drawRect((j+1)*30,(i-3)*30,30,30);
             }
         }
+    }
+    static void paintFigure(Graphics g) {
         switch (figure) {
             case 2 -> g.setColor(Color.ORANGE);
             case 3 -> g.setColor(Color.YELLOW);
@@ -153,6 +160,8 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         if (dY >= 5) {
             g.drawRect((dX + 1) * 30, (dY - 4) * 30, 30, 30);
         }
+    }
+    static void paintNextFigure(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(390,60,150,180);
         switch (nextFigure) {
@@ -176,7 +185,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             g.drawRect(nextDX, nextDY, 30, 30);
         }
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
