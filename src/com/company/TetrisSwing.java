@@ -34,7 +34,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte nextFigure;
     static byte fillAmount;
     static boolean finishPaint = false;
-    static final String fontStyle = "Arial";
+    static final String FONTSTYLE = "Arial";
 
     Timer timer = new Timer(5,this);
 
@@ -53,37 +53,37 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     }
 
     static JFrame getFrame() {
-        JFrame frame = new JFrame();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        JFrame frameF = new JFrame();
+        frameF.setVisible(true);
+        frameF.setDefaultCloseOperation(frameF.EXIT_ON_CLOSE);
+        frameF.setResizable(false);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        frame.setBounds((dimension.width- WINDOW_WIDTH) / 2,(dimension.height - WINDOW_HEIGHT) / 2,WINDOW_WIDTH+15,WINDOW_HEIGHT+38);
-        fontStart = new Font(fontStyle, Font.PLAIN, 20);
+        frameF.setBounds((dimension.width- WINDOW_WIDTH) / 2,(dimension.height - WINDOW_HEIGHT) / 2,WINDOW_WIDTH+15,WINDOW_HEIGHT+38);
+        fontStart = new Font(FONTSTYLE, Font.PLAIN, 20);
         JLabel scoreLabel = new JLabel("Score: ");
         scoreLabel.setForeground(Color.LIGHT_GRAY);
         scoreLabel.setBounds(390,330,70,30);
         scoreLabel.setFont(fontStart);
-        frame.add(scoreLabel);
-        Font fontNext = new Font(fontStyle, Font.PLAIN, 40);
+        frameF.add(scoreLabel);
+        Font fontNext = new Font(FONTSTYLE, Font.PLAIN, 40);
         restartLabel = new JLabel("Press space to start", SwingConstants.CENTER);
         restartLabel.setForeground(Color.WHITE);
         restartLabel.setBounds(70,260,420,60);
         restartLabel.setFont(fontNext);
-        frame.add(restartLabel);
+        frameF.add(restartLabel);
         currentScoreLabel = new JLabel(String.valueOf(score));
         currentScoreLabel.setForeground(Color.LIGHT_GRAY);
         currentScoreLabel.setBounds(460,330,80,30);
         currentScoreLabel.setFont(fontStart);
-        frame.add(currentScoreLabel);
+        frameF.add(currentScoreLabel);
         JLabel nextLabel = new JLabel("Next figure:");
         nextLabel.setBounds(390,27,110,30);
         nextLabel.setForeground(Color.LIGHT_GRAY);
         nextLabel.setFont(fontStart);
-        frame.add(nextLabel);
-        frame.setTitle("T E T R I S");
-        return(frame);
+        frameF.add(nextLabel);
+        frameF.setTitle("T E T R I S");
+        return(frameF);
     }
     @Override
     public void paint(Graphics g) {
@@ -225,7 +225,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     }
     static void showRestartLabel() {
         finishPaint = true;
-        Font fontRestart = new Font(fontStyle, Font.PLAIN, 36);
+        Font fontRestart = new Font(FONTSTYLE, Font.PLAIN, 36);
         restartLabel.setFont(fontRestart);
         restartLabel.setBounds(30,160,470,200);
         restartLabel.setText("<html><center>Game over!<center>" +
@@ -315,9 +315,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             speed -= 5;
         }
         for (int j = str - 1; j >= 4; j--) {
-            for (int i = 1; i < 11; i++) {
-                field[j + 1][i] = field[j][i];
-            }
+            System.arraycopy(field[j], 1, field[j + 1], 1, 10);
         }
         str++;
     }
