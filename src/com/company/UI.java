@@ -5,7 +5,9 @@ import java.awt.*;
 import static com.company.TetrisSwing.*;
 
 public class UI {
-
+    private UI() {
+        throw new IllegalStateException();
+    }
     static void paintField(Graphics g) {
         for (int i = 4; i < 24; i++) {
             for (int j = 1; j < 11; j++) {
