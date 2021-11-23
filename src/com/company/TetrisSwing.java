@@ -55,7 +55,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static JFrame getFrame() {
         JFrame frameF = new JFrame();
         frameF.setVisible(true);
-        frameF.setDefaultCloseOperation(frameF.EXIT_ON_CLOSE);
+        frameF.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frameF.setResizable(false);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
