@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 
 public class TetrisSwing extends JComponent implements KeyListener, ActionListener {
@@ -44,6 +45,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static JLabel currentScoreLabel;
     static JLabel restartLabel;
     static Font fontStart;
+    static Random random = new Random();
 
     public static void main(String[] args) {
         TetrisSwing main = new TetrisSwing();
@@ -247,7 +249,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         score = 0;
         currentScoreLabel.setText(String.valueOf(score));
         speed = 30;
-        nextFigure = (byte) (1 + Math.random() * 7);
+        nextFigure = (byte) (random.nextInt(7) + 1);
         aX = 4;
         aY = 2;
         cantFall = true;
@@ -261,7 +263,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         cantFall = false;
         rotation = 0;
         figure = nextFigure;
-        nextFigure = (byte) (1 + Math.random() * 7);
+        nextFigure = (byte)(random.nextInt(7) + 1);
         nextBX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][0][0];
         nextBY = NEXTAY + 30 * arrayOfFigures[nextFigure - 1][0][0][1];
         nextCX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][1][0];
