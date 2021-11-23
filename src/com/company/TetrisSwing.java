@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.SecureRandom;
-import java.util.Random;
-
 
 public class TetrisSwing extends JComponent implements KeyListener, ActionListener {
     static byte fallTimer;
