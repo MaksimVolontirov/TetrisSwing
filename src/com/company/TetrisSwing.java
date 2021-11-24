@@ -144,7 +144,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         finishPaint = true;
         Font fontRestart = new Font(FONTSTYLE, Font.PLAIN, 36);
         restartLabel.setFont(fontRestart);
-        restartLabel.setBounds(30,160,470,200);
+        restartLabel.setBounds(40,160,470,200);
         restartLabel.setText("<html><center>Game over!<center>" +
                 "Your score: " + score +
                 "<br>Press space to start again<html>");
@@ -154,7 +154,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         restart = false;
         finishPaint = false;
         score = 0;
-        //currentScoreLabel.setText(String.valueOf(score));
+        currentScoreLabel.setText(String.valueOf(score));
         speed = 30;
         nextFigure = (byte) (random.nextInt(7) + 1);
         aX = 4;
