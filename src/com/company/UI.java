@@ -4,10 +4,18 @@ import java.awt.*;
 
 import static com.company.TetrisSwing.*;
 
+/**
+ * UI class
+ */
 public class UI {
     private UI() {
         throw new IllegalStateException();
     }
+
+    /**
+     * Method which draws field
+     * @param g object of class Graphics
+     */
     static void paintField(Graphics g) {
         for (int i = 4; i < 24; i++) {
             for (int j = 1; j < 11; j++) {
@@ -40,6 +48,11 @@ public class UI {
             }
         }
     }
+
+    /**
+     * Method which draws fallen figure
+     * @param g object of class Graphics
+     */
     static void paintFigure(Graphics g) {
         switch (TetrisSwing.figure) {
             case 2 -> g.setColor(Color.ORANGE);
@@ -76,6 +89,11 @@ public class UI {
             g.drawRect((dX + 1) * 30, (dY - 4) * 30, 30, 30);
         }
     }
+
+    /**
+     * Method which draws next figure
+     * @param g object of class Graphics
+     */
     static void paintNextFigure(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(390,60,150,180);
