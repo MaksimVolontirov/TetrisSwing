@@ -310,7 +310,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) { //управление
         if (!restart) {
             if (e.getKeyCode() == KeyEvent.VK_UP) {
                 if ((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] < 11)) {
