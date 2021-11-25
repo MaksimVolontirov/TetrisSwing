@@ -195,7 +195,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         restart = false;
         finishPaint = false;
         score = 0;
-        currentScoreLabel.setText(String.valueOf(score));
+        //currentScoreLabel.setText(String.valueOf(score));
         speed = 30;
         nextFigure = (byte) (random.nextInt(7) + 1);
         aX = 4;
