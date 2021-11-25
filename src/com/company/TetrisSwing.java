@@ -48,13 +48,13 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static final int WINDOW_WIDTH = 570;
     static final int WINDOW_HEIGHT = 660;
     static JFrame frame;
-    static JLabel currentScoreLabel;
+    static JLabel currentScoreLabel = new JLabel();
     static JLabel restartLabel;
     static Font fontStart;
     static SecureRandom random = new SecureRandom();
 
     /**
-     * Method main wich adds window
+     * Method main which adds window
      * @param args value of command line
      */
     public static void main(String[] args) {
@@ -103,7 +103,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     }
 
     /**
-     * Method wich draws figures
+     * Method which draws figures
      * @param g object of class Graphics
      */
     @Override
@@ -141,7 +141,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     }
 
     /**
-     * Empty method which is unnecessary for work of anothers
+     * Empty method which is unnecessary for work of another
      * @param e object of class KeyEvent
      */
     @Override
@@ -195,7 +195,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         restart = false;
         finishPaint = false;
         score = 0;
-        //currentScoreLabel.setText(String.valueOf(score));
+        currentScoreLabel.setText(String.valueOf(score));
         speed = 30;
         nextFigure = (byte) (random.nextInt(7) + 1);
         aX = 4;
@@ -209,7 +209,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     }
 
     /**
-     * Method which sets sttings for a new figure
+     * Method which sets settings for a new figure
      */
     static void makeNextFigure() {
         cantFall = false;
@@ -370,7 +370,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         }
     }
     /**
-     * Empty method which is unnecessary for work of anothers
+     * Empty method which is unnecessary for work of another
      * @param e object of class KeyEvent
      */
     @Override

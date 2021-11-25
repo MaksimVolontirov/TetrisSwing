@@ -11,6 +11,7 @@ class TetrisSwingTest {
     @DisplayName("RestartGameTest")
     void restartGameTest() {
         boolean expectedRestart = false;
+        TetrisSwing.currentScoreLabel.setText("");
         TetrisSwing.restartGame();
         boolean actualRestart = TetrisSwing.restart;
         Assertions.assertEquals(expectedRestart, actualRestart);
