@@ -54,30 +54,36 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
 
     static JFrame getFrame() {
         JFrame frameF = new JFrame();
+
         frameF.setVisible(true);
         frameF.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frameF.setResizable(false);
+
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         frameF.setBounds((dimension.width- WINDOW_WIDTH) / 2,(dimension.height - WINDOW_HEIGHT) / 2,WINDOW_WIDTH+15,WINDOW_HEIGHT+38);
         fontStart = new Font(FONTSTYLE, Font.PLAIN, 20);
+
         JLabel scoreLabel = new JLabel("Score: ");
         scoreLabel.setForeground(Color.LIGHT_GRAY);
         scoreLabel.setBounds(390,330,70,30);
         scoreLabel.setFont(fontStart);
         frameF.add(scoreLabel);
+
         Font fontNext = new Font(FONTSTYLE, Font.PLAIN, 40);
         restartLabel = new JLabel("Press space to start", SwingConstants.CENTER);
         restartLabel.setForeground(Color.WHITE);
         restartLabel.setBounds(70,260,420,60);
         restartLabel.setFont(fontNext);
         frameF.add(restartLabel);
+
         currentScoreLabel = new JLabel(String.valueOf(score));
         currentScoreLabel.setForeground(Color.LIGHT_GRAY);
         currentScoreLabel.setBounds(460,330,80,30);
         currentScoreLabel.setFont(fontStart);
         frameF.add(currentScoreLabel);
         JLabel nextLabel = new JLabel("Next figure:");
+
         nextLabel.setBounds(390,27,110,30);
         nextLabel.setForeground(Color.LIGHT_GRAY);
         nextLabel.setFont(fontStart);
@@ -93,6 +99,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             for (int j = 1; j < 11; j++) {
                 if (finishPaint) {
                     switch (field[i][j]) {
+
                         case 1 -> g.setColor(Color.RED.darker());
                         case 2 -> g.setColor(Color.ORANGE.darker());
                         case 3 -> g.setColor(Color.YELLOW.darker());
@@ -103,6 +110,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
                         default -> g.setColor(Color.BLACK);
                     }
                 } else {
+
                     switch (field[i][j]) {
                         case 1 -> g.setColor(Color.RED);
                         case 2 -> g.setColor(Color.ORANGE);
@@ -120,6 +128,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             }
         }
         switch (figure) {
+
             case 2 -> g.setColor(Color.ORANGE);
             case 3 -> g.setColor(Color.YELLOW);
             case 4 -> g.setColor(Color.GREEN);
@@ -183,12 +192,16 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         if(gameOver) {
            showRestartLabel();
         } else {
+
             if (restart) {
                 restartGame();
             } else {
+
                 if (cantFall) {
+
                     makeNextFigure();
                 } else {
+
                     if (fallTimer == speed) {
                         dropFigure();
                     }
@@ -254,12 +267,14 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         rotation = 0;
         figure = nextFigure;
         nextFigure = (byte) (1 + Math.random() * 7);
+
         nextBX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][0][0];
         nextBY = NEXTAY + 30 * arrayOfFigures[nextFigure - 1][0][0][1];
         nextCX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][1][0];
         nextCY = NEXTAY + 30 * arrayOfFigures[nextFigure - 1][0][1][1];
         nextDX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][2][0];
         nextDY = NEXTAY + 30 * arrayOfFigures[nextFigure - 1][0][2][1];
+
         if (figure == 4) {
             amount = 1;
         } else {
@@ -287,6 +302,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         fallTimer = 0;
     }
     static void leaveFigure() {
+
         cantFall = true;
         field[aY - 1][aX] = figure;
         field[bY - 1][bX] = figure;
@@ -320,6 +336,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         str++;
     }
     static void findCoordinates() {
+
         fallTimer++;
         bX = aX + arrayOfFigures[figure - 1][rotation][0][0];
         bY = aY + arrayOfFigures[figure - 1][rotation][0][1];
