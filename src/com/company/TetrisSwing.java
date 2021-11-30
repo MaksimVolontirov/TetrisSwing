@@ -5,16 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.SecureRandom;
 
-/**
- * @author Volontirov Maxim, Romanko Nina, Protchenko Vladislav
- * Main class with game logic
- */
+
 public class TetrisSwing extends JComponent implements KeyListener, ActionListener {
-    /**
-     * Identification of all unnecessary variables and objects
-     */
     static byte fallTimer;
     static double speed;
     static int rotation;
@@ -26,7 +19,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static byte str;
     static boolean cantFall;
     static boolean restart = true;
-    static byte[][] field = new byte[25][12];
+    static byte[][] field = new byte[25][12]; //Игровое поле
     static boolean gameOver = true;
     static byte[][][][] arrayOfFigures = {
             {{{-1,0},{0,1},{1,0}}, {{0,-1},{-1,0},{0,1}}, {{1,0},{0,-1},{-1,0}}, {{0,1},{1,0},{0,-1}}},
@@ -37,7 +30,7 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             {{{-1,0},{0,-1},{1,-1}}, {{0,-1},{1,0},{1,1}}, {{1,0},{0,1},{-1,1}}, {{0,1},{-1,0},{-1,-1}}},
             {{{1,0},{0,-1},{-1,-1}}, {{0,1},{1,0},{1,-1}}, {{-1,0},{0,1},{1,1}}, {{0,-1},{-1,0},{-1,1}}}
     };
-    static byte figure;
+    static byte figure; //Значение, показывающее номер фигуры
     static byte nextFigure;
     static byte fillAmount;
     static boolean finishPaint = false;
@@ -48,15 +41,10 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
     static final int WINDOW_WIDTH = 570;
     static final int WINDOW_HEIGHT = 660;
     static JFrame frame;
-    static JLabel currentScoreLabel = new JLabel();
+    static JLabel currentScoreLabel;
     static JLabel restartLabel;
     static Font fontStart;
-    static SecureRandom random = new SecureRandom();
 
-    /**
-     * Method main which adds window
-     * @param args value of command line
-     */
     public static void main(String[] args) {
         TetrisSwing main = new TetrisSwing();
         frame = getFrame();
@@ -64,10 +52,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         frame.addKeyListener(main);
     }
 
-    /**
-     * Method which sets window settings
-     * @return window settings
-     */
     static JFrame getFrame() {
         JFrame frameF = new JFrame();
         frameF.setVisible(true);
@@ -101,24 +85,98 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         frameF.setTitle("T E T R I S");
         return(frameF);
     }
-
-    /**
-     * Method which draws figures
-     * @param g object of class Graphics
-     */
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,WINDOW_WIDTH+1,WINDOW_HEIGHT+1);
-        UI.paintField(g);
-        UI.paintFigure(g);
-        UI.paintNextFigure(g);
+        for (int i = 4; i < 24; i++) {
+            for (int j = 1; j < 11; j++) {
+                if (finishPaint) {
+                    switch (field[i][j]) {
+                        case 1 -> g.setColor(Color.RED.darker());
+                        case 2 -> g.setColor(Color.ORANGE.darker());
+                        case 3 -> g.setColor(Color.YELLOW.darker());
+                        case 4 -> g.setColor(Color.GREEN.darker());
+                        case 5 -> g.setColor(Color.CYAN.darker());
+                        case 6 -> g.setColor(Color.BLUE.darker());
+                        case 7 -> g.setColor(Color.MAGENTA.darker());
+                        default -> g.setColor(Color.BLACK);
+                    }
+                } else {
+                    switch (field[i][j]) {
+                        case 1 -> g.setColor(Color.RED);
+                        case 2 -> g.setColor(Color.ORANGE);
+                        case 3 -> g.setColor(Color.YELLOW);
+                        case 4 -> g.setColor(Color.GREEN);
+                        case 5 -> g.setColor(Color.CYAN);
+                        case 6 -> g.setColor(Color.BLUE);
+                        case 7 -> g.setColor(Color.MAGENTA);
+                        default -> g.setColor(Color.BLACK);
+                    }
+                }
+                g.fillRect((j+1)*30,(i-3)*30,30,30);
+                g.setColor(Color.GRAY);
+                g.drawRect((j+1)*30,(i-3)*30,30,30);
+            }
+        }
+        switch (figure) {
+            case 2 -> g.setColor(Color.ORANGE);
+            case 3 -> g.setColor(Color.YELLOW);
+            case 4 -> g.setColor(Color.GREEN);
+            case 5 -> g.setColor(Color.CYAN);
+            case 6 -> g.setColor(Color.BLUE);
+            case 7 -> g.setColor(Color.MAGENTA);
+            default -> g.setColor(Color.RED);
+        }
+        if (aY >= 5) {
+            g.fillRect((aX + 1) * 30, (aY - 4) * 30, 30, 30);
+        }
+        if (bY >= 5) {
+            g.fillRect((bX + 1) * 30, (bY - 4) * 30, 30, 30);
+        }
+        if (cY >= 5) {
+            g.fillRect((cX + 1) * 30, (cY - 4) * 30, 30, 30);
+        }
+        if (dY >= 5) {
+            g.fillRect((dX + 1) * 30, (dY - 4) * 30, 30, 30);
+        }
+        g.setColor(Color.GRAY);
+        if (aY >= 5) {
+            g.drawRect((aX + 1) * 30, (aY - 4) * 30, 30, 30);
+        }
+        if (bY >= 5) {
+            g.drawRect((bX + 1) * 30, (bY - 4) * 30, 30, 30);
+        }
+        if (cY >= 5) {
+            g.drawRect((cX + 1) * 30, (cY - 4) * 30, 30, 30);
+        }
+        if (dY >= 5) {
+            g.drawRect((dX + 1) * 30, (dY - 4) * 30, 30, 30);
+        }
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(390,60,150,180);
+        switch (nextFigure) {
+            case 2 -> g.setColor(Color.ORANGE);
+            case 3 -> g.setColor(Color.YELLOW);
+            case 4 -> g.setColor(Color.GREEN);
+            case 5 -> g.setColor(Color.CYAN);
+            case 6 -> g.setColor(Color.BLUE);
+            case 7 -> g.setColor(Color.MAGENTA);
+            default -> g.setColor(Color.RED);
+        }
+        if (!gameOver) {
+            g.fillRect(NEXTAX, NEXTAY, 30, 30);
+            g.fillRect(nextBX, nextBY, 30, 30);
+            g.fillRect(nextCX, nextCY, 30, 30);
+            g.fillRect(nextDX, nextDY, 30, 30);
+            g.setColor(Color.GRAY);
+            g.drawRect(NEXTAX, NEXTAY, 30, 30);
+            g.drawRect(nextBX, nextBY, 30, 30);
+            g.drawRect(nextCX, nextCY, 30, 30);
+            g.drawRect(nextDX, nextDY, 30, 30);
+        }
     }
 
-    /**
-     * Method with game logic
-     * @param e object of class ActionEvent
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
@@ -140,18 +198,10 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         }
     }
 
-    /**
-     * Empty method which is unnecessary for work of another
-     * @param e object of class KeyEvent
-     */
     @Override
     public void keyTyped(KeyEvent e) { //Этот метод должен присутствовать, но не используется
     }
 
-    /**
-     * Method which handles keys pressing
-     * @param e object of class KeyEvent
-     */
     @Override
     public void keyPressed(KeyEvent e) {
         if (!restart) {
@@ -173,31 +223,23 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             pressSpace();
         }
     }
-
-    /**
-     * Method which shows label after game over
-     */
     static void showRestartLabel() {
         finishPaint = true;
         Font fontRestart = new Font(FONTSTYLE, Font.PLAIN, 36);
         restartLabel.setFont(fontRestart);
-        restartLabel.setBounds(40,160,470,200);
+        restartLabel.setBounds(30,160,470,200);
         restartLabel.setText("<html><center>Game over!<center>" +
                 "Your score: " + score +
                 "<br>Press space to start again<html>");
         restartLabel.setVisible(true);
     }
-
-    /**
-     * Method which sets initial settings
-     */
     static void restartGame() {
         restart = false;
         finishPaint = false;
         score = 0;
         currentScoreLabel.setText(String.valueOf(score));
         speed = 30;
-        nextFigure = (byte) (random.nextInt(7) + 1);
+        nextFigure = (byte) (1 + Math.random() * 7);
         aX = 4;
         aY = 2;
         cantFall = true;
@@ -207,15 +249,11 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             }
         }
     }
-
-    /**
-     * Method which sets settings for a new figure
-     */
     static void makeNextFigure() {
         cantFall = false;
         rotation = 0;
         figure = nextFigure;
-        nextFigure = (byte)(random.nextInt(7) + 1);
+        nextFigure = (byte) (1 + Math.random() * 7);
         nextBX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][0][0];
         nextBY = NEXTAY + 30 * arrayOfFigures[nextFigure - 1][0][0][1];
         nextCX = NEXTAX + 30 * arrayOfFigures[nextFigure - 1][0][1][0];
@@ -230,10 +268,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         aX = 5;
         aY = 2;
     }
-
-    /**
-     * Method which lets down figure
-     */
     static void dropFigure() {
         if ((field[aY][aX] == 0) && (aY + 1 < 25) && (field[bY][bX] == 0) && (bY + 1 < 25) && (field[cY][cX] == 0) && (cY + 1 < 25) && (field[dY][dX] == 0) && (dY + 1 < 25)) {
             aY++;
@@ -252,10 +286,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         }
         fallTimer = 0;
     }
-
-    /**
-     * Method which leaves fallen figure on field
-     */
     static void leaveFigure() {
         cantFall = true;
         field[aY - 1][aX] = figure;
@@ -263,10 +293,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         field[cY - 1][cX] = figure;
         field[dY - 1][dX] = figure;
     }
-
-    /**
-     * Method which checks filled strings
-     */
     static void checkStrings() {
         str = 23;
         while (str > 3) {
@@ -282,10 +308,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             str--;
         }
     }
-
-    /**
-     * Method which removes filled strings
-     */
     static void removeString() {
         score += 10;
         currentScoreLabel.setText(String.valueOf(score));
@@ -297,10 +319,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         }
         str++;
     }
-
-    /**
-     * Method which finds coordinates of all figure's squares
-     */
     static void findCoordinates() {
         fallTimer++;
         bX = aX + arrayOfFigures[figure - 1][rotation][0][0];
@@ -310,18 +328,10 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
         dX = aX + arrayOfFigures[figure - 1][rotation][2][0];
         dY = aY + arrayOfFigures[figure - 1][rotation][2][1];
     }
-
-    /**
-     * Method which is called when space is pressed
-     */
     static void pressSpace() {
         gameOver = false;
         restartLabel.setVisible(false);
     }
-
-    /**
-     * Method which rotates figure
-     */
     static void rotateFigure() {
         if ((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] < 11)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] < 11)) {
             if ((aX + arrayOfFigures[figure-1][(rotation + 1) % amount][0][0] > 0)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][1][0] > 0)&&(aX + arrayOfFigures[figure-1][(rotation + 1) % amount][2][0] > 0)) {
@@ -333,10 +343,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             }
         }
     }
-
-    /**
-     * Method which lets down figure
-     */
     static void moveFigureDown() {
         if ((field[aY][aX] == 0) && (aY + 1 < 25) && (field[bY][bX] == 0) && (bY + 1 < 25) && (field[cY][cX] == 0) && (cY + 1 < 25) && (field[dY][dX] == 0) && (dY + 1 < 25)) {
             aY++;
@@ -345,10 +351,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             dY = aY + arrayOfFigures[figure - 1][rotation][2][1];
         }
     }
-
-    /**
-     * Method which moves figure left
-     */
     static void moveFigureLeft() {
         if (!cantFall && (field[aY - 1][aX - 1] == 0) && (aX - 1 > 0) && (field[bY - 1][bX - 1] == 0) && (bX - 1 > 0) && (field[cY - 1][cX - 1] == 0) && (cX - 1 > 0) && (field[dY - 1][dX - 1] == 0) && (dX - 1 > 0)) {
             aX--;
@@ -357,10 +359,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             dX = aX + arrayOfFigures[figure - 1][rotation][2][0];
         }
     }
-
-    /**
-     * Method which moves figure right
-     */
     static void moveFigureRight() {
         if (!cantFall && (field[aY - 1][aX + 1] == 0) && (aX + 1 < 11) && (field[bY - 1][bX + 1] == 0) && (bX + 1 < 11) && (field[cY - 1][cX + 1] == 0) && (cX + 1 < 11) && (field[dY - 1][dX + 1] == 0) && (dX + 1 < 11)) {
             aX++;
@@ -369,10 +367,6 @@ public class TetrisSwing extends JComponent implements KeyListener, ActionListen
             dX = aX + arrayOfFigures[figure - 1][rotation][2][0];
         }
     }
-    /**
-     * Empty method which is unnecessary for work of another
-     * @param e object of class KeyEvent
-     */
     @Override
     public void keyReleased(KeyEvent e) { //Этот метод должен присутствовать, но не используется
     }
